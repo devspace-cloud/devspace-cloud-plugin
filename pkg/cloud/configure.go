@@ -44,7 +44,7 @@ func (p *provider) UpdateKubeConfig(contextName string, serviceAccount *latest.S
 
 	authInfo := api.NewAuthInfo()
 	authInfo.Exec = &api.ExecConfig{
-		APIVersion: "client.authentication.k8s.io/v1alpha1",
+		APIVersion: "client.authentication.k8s.io/v1beta1",
 		Command:    kubeconfig.AuthCommand,
 		Args:       []string{"use", "space", "--provider", p.Name, "--space-id", strconv.Itoa(spaceID), "--get-token", "--silent"},
 	}
