@@ -43,7 +43,7 @@ func TestUpdateKubeConfig(t *testing.T) {
 				AuthInfos: map[string]*api.AuthInfo{
 					"contextParam": &api.AuthInfo{
 						Exec: &api.ExecConfig{
-							APIVersion: "client.authentication.k8s.io/v1alpha1",
+							APIVersion: "client.authentication.k8s.io/v1beta1",
 							Command:    "devspace",
 							Args:       []string{"use", "space", "--provider", "providerName", "--space-id", "2", "--get-token", "--silent"},
 						},

@@ -32,7 +32,7 @@ if [[ -z "${DEVSPACE_BUILD_PLATFORMS}" ]]; then
 fi
 
 if [[ -z "${DEVSPACE_BUILD_ARCHS}" ]]; then
-    DEVSPACE_BUILD_ARCHS="amd64 386"
+    DEVSPACE_BUILD_ARCHS="amd64 386 arm64"
 fi
 
 mkdir -p "${DEVSPACE_ROOT}/release"
@@ -52,7 +52,7 @@ for OS in ${DEVSPACE_BUILD_PLATFORMS[@]}; do
       CGO_ENABLED=0
     fi
 
-    if [[ "${ARCH}" == "386" && "${OS}" == "darwin" ]]; then
+    if [[ ("${ARCH}" == "386" && "${OS}" == "darwin") || ("${ARCH}" == "arm64" && "${OS}" != "darwin") ]]; then
         # darwin 386 is deprecated and shouldn't be used anymore
         echo "Building for ${OS}/${ARCH} not supported."
     else

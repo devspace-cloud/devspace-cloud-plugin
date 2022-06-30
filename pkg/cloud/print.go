@@ -11,7 +11,7 @@ import (
 	"github.com/devspace-cloud/devspace-cloud-plugin/pkg/cloud/token"
 	"github.com/pkg/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/pkg/apis/clientauthentication/v1alpha1"
+	"k8s.io/client-go/pkg/apis/clientauthentication/v1beta1"
 
 	"github.com/devspace-cloud/devspace/pkg/util/log"
 )
@@ -160,12 +160,12 @@ func (p *provider) resume(server, caCert, token, namespace string, spaceID int, 
 func printToken(token string) error {
 	// Print token to stdout
 	expireTime := metav1.NewTime(time.Now().Add(time.Hour))
-	response := &v1alpha1.ExecCredential{
+	response := &v1beta1.ExecCredential{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "ExecCredential",
-			APIVersion: "client.authentication.k8s.io/v1alpha1",
+			APIVersion: "client.authentication.k8s.io/v1beta1",
 		},
-		Status: &v1alpha1.ExecCredentialStatus{
+		Status: &v1beta1.ExecCredentialStatus{
 			Token:               token,
 			ExpirationTimestamp: &expireTime,
 		},
