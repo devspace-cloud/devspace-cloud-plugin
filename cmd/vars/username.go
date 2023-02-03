@@ -2,9 +2,11 @@ package vars
 
 import (
 	"fmt"
+	"github.com/devspace-cloud/devspace-cloud-plugin/pkg/cloud"
 	cloudconfig "github.com/devspace-cloud/devspace-cloud-plugin/pkg/cloud/config"
 	cloudtoken "github.com/devspace-cloud/devspace-cloud-plugin/pkg/cloud/token"
 	"github.com/devspace-cloud/devspace-cloud-plugin/pkg/factory"
+	"github.com/devspace-cloud/devspace/pkg/util/log"
 	"github.com/mgutz/ansi"
 	"os"
 
@@ -19,7 +21,7 @@ func newUsernameCmd(f factory.Factory) *cobra.Command {
 	return &cobra.Command{
 		Use:   "username",
 		Short: "Prints the current username",
-		Args: cobra.NoArgs,
+		Args:  cobra.NoArgs,
 		RunE: func(cobraCmd *cobra.Command, args []string) error {
 			return cmd.Run(f, cobraCmd, args)
 		},
@@ -59,12 +61,23 @@ func (*usernameCmd) Run(f factory.Factory, cobraCmd *cobra.Command, args []strin
 	if provider == nil {
 		return retErr
 	}
+
+	token := provider.Token
 	if provider.Token == "" {
-		return retErr
+		prov, err := cloud.GetProvider("", log.Discard)
+		if err != nil {
+			return retErr
+		}
+		
+		token, err = prov.Client().GetToken()
+		if err != nil {
+			return retErr
+		}
 	}
 
-	accountName, err := cloudtoken.GetAccountName(provider.Token)
+	accountName, err := cloudtoken.GetAccountName(token)
 	if err != nil {
+		fmt.Println(err)
 		return retErr
 	}
 
